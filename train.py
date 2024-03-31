@@ -113,7 +113,7 @@ if not model_exists(model_path):
     model.save_pretrained(model_path)
     tokenizer.save_pretrained(model_path)
 
-model_path = "./saved_model"
+model_path = "./saved_model_large"
 tokenizer = BertTokenizer.from_pretrained(model_path)
 model = BertForSequenceClassification.from_pretrained(model_path, num_labels=2)
 
@@ -129,7 +129,7 @@ while True:
     print(f"Predict Label:{predictions.item()}")
 
     true_label = int(input("True Label(0 or 1):"))
-
+    learning_rate = float(input("Learning rate:"))
     if predictions.item() != true_label:
         fine_tune_dataset = OnlineLearningDataset(
             [user_sentence], [true_label], tokenizer
@@ -141,7 +141,7 @@ while True:
             warmup_steps=10,
             weight_decay=0.01,
             logging_dir="./fine_tune_logs",
-            learning_rate=1e-5,
+            learning_rate=learning_rate,
         )
         fine_tune_trainer = Trainer(
             model=model,
@@ -153,5 +153,5 @@ while True:
         print("False.Training!")
     else:
         print("True!")
-model.save_pretrained("./saved_model")
-tokenizer.save_pretrained("./saved_model")
+model.save_pretrained("./saved_model_large")
+tokenizer.save_pretrained("./saved_model_large")
