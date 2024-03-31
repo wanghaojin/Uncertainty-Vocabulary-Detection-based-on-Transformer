@@ -34,7 +34,6 @@ tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
 model = BertForSequenceClassification.from_pretrained("bert-base-uncased", num_labels=2)
 texts = ["This is a certain sentence.", "This might be an uncertain sentence."]
 labels = [0, 1]
-# 数据集后续再补充
 train_dataset = UncertaintyDataset(texts, labels, tokenizer)
 
 training_args = TrainingArguments(
